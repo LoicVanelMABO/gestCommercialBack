@@ -36,20 +36,26 @@ public class ArticleService {
 
     @Transactional
     //public void creerArticleAvecFournisseur(Article article, Fournisseur fournisseur){
-    public void creerArticleAvecFournisseur(Article article, Collection<Fournisseur> fournisseur){
-        CatArticle categorieExistBdd = this.cartArticleService.lireOuCreer(article.getCatArticle());
-        for(Fournisseur four : fournisseur){
-            Fournisseur fournisseurExist = this.fournisseurService.lireOuCreer(four);
-            article.getFournisseurs().add(fournisseurExist);
+    public void creerArticleAvecFournisseur(Long idCategorie,Article article, Collection<Long> fournisseur){
+        CatArticle categorieExistBdd = this.cartArticleService.lire(idCategorie);
+        if(categorieExistBdd instanceof CatArticle){
+            for(Long four : fournisseur){
+                Fournisseur fournisseurExist = this.fournisseurService.lire(four);
+                if (article.getFournisseurs() == null) {
+                    article.setFournisseurs(new ArrayList<>());
+                }
+                article.getFournisseurs().add(fournisseurExist);
+            }
+            article.setCatArticle(categorieExistBdd);
+            this.articleRepository.save(article);
         }
-        article.setCatArticle(categorieExistBdd);
-        this.articleRepository.save(article);
     }
 
     @Transactional
     public List<Article> recherche(){
         List<Article> articles;
-        articles = articleRepository.findByEtatArticle(Etat.VALIDE);
+        //articles = articleRepository.findByEtatArticle(Etat.VALIDE);
+        articles = articleRepository.findAllArticlesWithCategories(Etat.VALIDE);
         if(articles.isEmpty()){
             return new ArrayList<>();
         }
@@ -89,14 +95,17 @@ public class ArticleService {
     }
 
     @Transactional
-    public void modifier(int id, Article article, Collection<Fournisseur> fournisseur) {
+    public void modifier(int id, long idCategorie, Article article, Collection<Long> fournisseur) {
         Article articleBdd = this.lire2(id);
         if(null != articleBdd.getId()){
             if(article.getEtatArticle() != null){
                 articleBdd.setEtatArticle(article.getEtatArticle());
             }
             if(article.getCatArticle() != null){
-                articleBdd.setCatArticle(article.getCatArticle());
+                CatArticle cat = this.cartArticleService.lire(idCategorie);
+                if(cat != null){
+                    articleBdd.setCatArticle(cat);
+                }
             }
             if(article.getNomArticle() != null){
                 articleBdd.setNomArticle(article.getNomArticle());
@@ -119,9 +128,15 @@ public class ArticleService {
             if(article.getReference() != null){
                 articleBdd.setReference(article.getReference());
             }
-            if(articleBdd.getFournisseurs() != fournisseur) {
-                articleBdd.getFournisseurs().clear();
-                articleBdd.getFournisseurs().addAll(fournisseur);
+            if(articleBdd.getFournisseurs() != null) {
+                if(!fournisseur.isEmpty()){
+                    articleBdd.getFournisseurs().clear();
+
+                    for(Long four : fournisseur){
+                        Fournisseur fournisseurExist = this.fournisseurService.lire(four);
+                        articleBdd.getFournisseurs().add(fournisseurExist);
+                    }
+                }
             }
             this.articleRepository.save(articleBdd);
         }

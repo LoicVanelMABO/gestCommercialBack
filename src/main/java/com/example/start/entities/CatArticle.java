@@ -22,7 +22,8 @@ public class CatArticle {
 
     @Column(nullable = false)
     private Etat etatCat;
-    @JsonManagedReference
+    //@JsonManagedReference
+    @JsonIgnore
     @OneToMany(mappedBy = "catArticle", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Collection<Article> articles = new ArrayList<>();
 

@@ -2,13 +2,11 @@ package com.example.start.entities;
 
 import com.example.start.enums.Etat;
 import com.example.start.enums.EtatObjetTicket;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Date;
 
+@Entity
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -136,17 +134,4 @@ public class Ticket {
     public Ticket() {
     }
 
-    public Ticket(com.example.start.enums.Etat etat, String treatedUsers, String motifs, String nextRole, String nextUser, String initUser, EtatObjetTicket objet, Date closeDate, Date openDate, String num, Long id) {
-        Etat = etat;
-        this.treatedUsers = treatedUsers;
-        this.motifs = motifs;
-        this.nextRole = nextRole;
-        this.nextUser = nextUser;
-        this.initUser = initUser;
-        Objet = objet;
-        this.closeDate = closeDate;
-        this.openDate = openDate;
-        this.num = num;
-        this.id = id;
-    }
 }

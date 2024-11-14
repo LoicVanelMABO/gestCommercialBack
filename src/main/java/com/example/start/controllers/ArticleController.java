@@ -27,9 +27,17 @@ public class ArticleController {
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
     //public void creer(@RequestBody Article article, @RequestBody Fournisseur fournisseur){
     public void creer(@RequestBody ArticleFournisseurRequest artFour){
-        System.out.println("ELEMENT "+artFour);
-        //this.articleService.creerArticleAvecFournisseur(article, fournisseur);
-        this.articleService.creerArticleAvecFournisseur(artFour.getArticle(),artFour.getFournisseur());
+        Article art = new Article();
+        art.setNomArticle(artFour.getNomArticle());
+        art.setDescription(artFour.getNomArticle());
+        art.setDatePeremption(artFour.getDatePeremption());
+        art.setReference(artFour.getReference());
+        art.setPrixUnit(artFour.getPrixUnit());
+        art.setEtatArticle(artFour.getEtatArticle());
+        art.setQuantite(artFour.getQuantite());
+        Long idCategorie = artFour.getIdCategorie();
+
+        this.articleService.creerArticleAvecFournisseur(idCategorie,art,artFour.getFournisseur());
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
@@ -44,7 +52,17 @@ public class ArticleController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping(path = "{id}", consumes = APPLICATION_JSON_VALUE)
     public void update(@PathVariable int id, @RequestBody ArticleFournisseurRequest artFour){
-        this.articleService.modifier(id,artFour.getArticle(), artFour.getFournisseur());
+        Article art = new Article();
+        art.setNomArticle(artFour.getNomArticle());
+        art.setDescription(artFour.getNomArticle());
+        art.setDatePeremption(artFour.getDatePeremption());
+        art.setReference(artFour.getReference());
+        art.setPrixUnit(artFour.getPrixUnit());
+        art.setEtatArticle(artFour.getEtatArticle());
+        art.setQuantite(artFour.getQuantite());
+        Long idCategorie = artFour.getIdCategorie();
+
+        this.articleService.modifier(id,idCategorie, art, artFour.getFournisseur());
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)

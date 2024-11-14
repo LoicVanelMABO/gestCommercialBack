@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -38,7 +39,8 @@ public class Article {
     @Column(nullable = false)
     private Etat etatArticle;
 
-    @JsonBackReference
+    //@JsonBackReference
+    @JsonManagedReference
     @ManyToOne(cascade = {PERSIST, MERGE}, fetch = FetchType.LAZY)
     @JoinColumn(name = "catArticle_id", nullable = false)
     //@JsonIgnore // pour Ignorer la sérialisation de la catégorie pour chaque article
@@ -46,7 +48,7 @@ public class Article {
 
     @ManyToMany
     @JoinTable(name = "article_fournisseur", joinColumns = @JoinColumn(name = "article_id"), inverseJoinColumns = @JoinColumn(name = "fournisseur_id"))
-    private Collection<Fournisseur> fournisseurs;
+    private Collection<Fournisseur> fournisseurs = new ArrayList<>();
 
     //Constructeurs
     public Article() {
