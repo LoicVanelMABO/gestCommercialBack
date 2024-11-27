@@ -1,6 +1,7 @@
 package com.example.start.entities;
 
 import com.example.start.enums.Etat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.Collection;
@@ -25,6 +26,7 @@ public class Fournisseur {
     private Etat etatFournisseur;
 
     @ManyToMany
+    //@JsonManagedReference
     private Collection<Article> articles;
 
     //Constructeurs

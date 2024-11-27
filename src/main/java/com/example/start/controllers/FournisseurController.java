@@ -1,7 +1,9 @@
 package com.example.start.controllers;
 
+import com.example.start.Dto.FournisseurRequest;
 import com.example.start.entities.CatArticle;
 import com.example.start.entities.Fournisseur;
+import com.example.start.enums.Etat;
 import com.example.start.services.CartArticleService;
 import com.example.start.services.FournisseurService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +26,14 @@ public class FournisseurController {
 
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
-    public void creer(@RequestBody Fournisseur fournisseur){
-        this.fournisseurService.creer(fournisseur);
+    //public void creer(@RequestBody Fournisseur fournisseur){
+    public void creer(@RequestBody FournisseurRequest fournisseur){
+        Fournisseur Four = new Fournisseur();
+        Four.setNomFournisseur(fournisseur.getNomFournisseur());
+        Four.setEmail(fournisseur.getEmail());
+        Four.setTel(fournisseur.getTel());
+        Four.setEtatFournisseur(Etat.VALIDE);
+        this.fournisseurService.creer(Four);
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
@@ -39,8 +47,15 @@ public class FournisseurController {
     }
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping(path = "{id}", consumes = APPLICATION_JSON_VALUE)
-    public void update(@PathVariable int id, @RequestBody Fournisseur fournisseur){
-        this.fournisseurService.modifier(id,fournisseur);
+    //public void update(@PathVariable int id, @RequestBody Fournisseur fournisseur){
+    public void update(@PathVariable int id, @RequestBody FournisseurRequest fournisseur){
+        Fournisseur Four = new Fournisseur();
+        Four.setNomFournisseur(fournisseur.getNomFournisseur());
+        Four.setEmail(fournisseur.getEmail());
+        Four.setTel(fournisseur.getTel());
+        Four.setEtatFournisseur(Etat.VALIDE);
+
+        this.fournisseurService.modifier(id,Four);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)

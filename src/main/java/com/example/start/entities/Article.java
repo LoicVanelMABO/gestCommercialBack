@@ -47,6 +47,7 @@ public class Article {
     private CatArticle catArticle;
 
     @ManyToMany
+    //@JsonBackReference
     @JoinTable(name = "article_fournisseur", joinColumns = @JoinColumn(name = "article_id"), inverseJoinColumns = @JoinColumn(name = "fournisseur_id"))
     private Collection<Fournisseur> fournisseurs = new ArrayList<>();
 

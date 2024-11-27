@@ -79,7 +79,7 @@ public class FournisseurService {
     @Transactional
     public void modifier(int id, Fournisseur fournisseur) {
         Fournisseur fournissuerBdd = this.lire2(id);
-        if(fournissuerBdd.getId() == fournisseur.getId()){
+        if(fournissuerBdd != null){
             if(fournissuerBdd.getNomFournisseur() != fournisseur.getNomFournisseur()){
                 fournissuerBdd.setNomFournisseur(fournisseur.getNomFournisseur());
             }
